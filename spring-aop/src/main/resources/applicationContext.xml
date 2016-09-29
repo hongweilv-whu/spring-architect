@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+    <bean id="securityChecker" class="com.whu.hong.aop.PermissionCheckerAspect" />
+
+    <!-- 配置一个切面 -->
+    <!--<bean id="greetingAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        &lt;!&ndash;<property name="advice" ref="securityChecker"/>            &lt;!&ndash; 增强 &ndash;&gt;&ndash;&gt;
+        <property name="pattern" value="aop.demo.GreetingImpl.good.*"/> &lt;!&ndash; 切点（正则表达式） &ndash;&gt;
+    </bean>-->
+
+    <aop:config>
+        <aop:pointcut id="pointcut1" expression="execution(* service.DemoService.handleFilters(..))"/>
+        <aop:pointcut id="pointcut2" expression="execution(* service.DemoService.handleDisplayFields(..))"/>
+        <aop:pointcut id="pointcut3" expression="execution(* service.DemoService.printDemo(..))"/>
+        <aop:aspect ref="securityChecker">
+            <!--<aop:pointcut id="pointcut2" expression="execution(* service.DemoService.*(..))"/>-->
+
+            <!--<aop:before method="isSecure" pointcut="execution(* controllers.*.*(..))"/>-->
+            <!--<aop:before method="isSecure" pointcut="execution(* service.*.*(..))"/>-->
+            <aop:before method="isSecure" pointcut-ref="pointcut1"/>
+            <aop:before method="isSecure" pointcut-ref="pointcut2"/>
+            <aop:before method="isSecure" pointcut-ref="pointcut3"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

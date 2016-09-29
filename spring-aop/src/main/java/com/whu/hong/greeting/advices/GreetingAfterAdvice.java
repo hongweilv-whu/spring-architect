@@ -1,0 +1,15 @@
+package com.whu.hong.greeting.advices;
+
+import org.springframework.aop.AfterReturningAdvice;
+
+import java.lang.reflect.Method;
+
+/**
+ * Description:
+ * Created by lvhw on 2016/9/21 22:31.
+ */
+public class GreetingAfterAdvice implements AfterReturningAdvice {
+    public void afterReturning(Object o, Method method, Object[] objects, Object o1) throws Throwable {
+        System.out.println("After!");
+    }
+}
